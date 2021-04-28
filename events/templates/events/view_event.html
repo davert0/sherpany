@@ -2,8 +2,9 @@
 {% load events_tags %}
 
 {% block content %}
+
 <div class="col-md-12">
-    {% for item in events %}
+
     <div class="card mb-3">
         <div class="card-header">
             Event will take place at <b>{{item.event_date}}</b>
@@ -14,16 +15,24 @@
                 <div class="media-body">
                     <h5 class="card-title">{{item.title}}</h5>
                     <p class="card-text">{{item.description|linebreaks|truncatewords:50}}</p>
-                    <a href="{{ item.get_absolute_url }}" class="btn btn-primary">Read more</a>
+                    <form action="{{item.get_absolute_url}}" method="post">
+                        {% csrf_token %}
+                        {% if signup %}
+                        <button type="submit" name='signup' value="NEOK" class="btn btn-primary">Withdraw from event
+                        </button>
+                        {% else %}
+                        <button type="submit" name='signup' value="OK" class="btn btn-primary">Sign up for event
+                        </button>
+                        {% endif %}
+                    </form>
                 </div>
             </div>
         </div>
         <div class="card-footer text-muted">
-           Owner of the event: <a href="#"> {{ item.owner }} </a> <br>
+            Owner of the event: <a href="#"> {{ item.owner }} </a> <br>
             Amount of participants: {% get_count item %}
         </div>
     </div>
-    {% endfor %}
-</div>
-{% endblock %}
+
+    {% endblock %}
 
