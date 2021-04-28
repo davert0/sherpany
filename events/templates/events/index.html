@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+
+{% block content %}
+<div class="col-md-12">
+    {% for item in events %}
+    <div class="card mb-3">
+        <div class="card-header">
+            Event will take place at <b>{{item.event_date}}</b>
+        </div>
+        <div class="card-body">
+            <div class="media">
+
+                <div class="media-body">
+                    <h5 class="card-title">{{item.title}}</h5>
+                    <p class="card-text">{{item.description|linebreaks|truncatewords:50}}</p>
+                    <a href="#" class="btn btn-primary">Sign up for event</a>
+                </div>
+            </div>
+        </div>
+        <div class="card-footer text-muted">
+           Owner of the event: <a href="#"> {{ item.owner }} </a> <br>
+            Amount of participants: {{item.amount_of_visitors}}
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}
+

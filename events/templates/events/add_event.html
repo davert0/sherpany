@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block title %}Create an event{% endblock %}
+
+{% block sidebar %}
+{% include "inc/_sidebar.html" %}
+{% endblock %}
+
+{% block content %}
+
+<h1>Create your event</h1>
+
+<form action="{% url 'add_event' %}" method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <div class="d-grid gap-2">
+        <button type="submit" class="btn btn-primary btn-block">Create an event</button>
+    </div>
+</form>
+
+{% endblock %}
