@@ -20,10 +20,10 @@
         </div>
         {% if request.user.is_authenticated %}
         Welcome, <a href="{% url 'profile' request.user.username %}"> {{ user.username }}</a> | <a
-            href="{% url 'logout' %}">Logout</a>
+            href="{% url 'account_logout' %}">Logout</a>
         {% else %}
         <span class="navbar-text">
-            <a href="{% url 'register' %}">Register</a> | <a href="{% url 'login' %}">Login</a>
+            <a href="{% url 'account_signup' %}">Register</a> | <a href="{% url 'account_login' %}">Login</a>
         </span>
         {% endif %}
     </div>

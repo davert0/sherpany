@@ -5,7 +5,7 @@ from django.urls import reverse_lazy
 from django.views.generic import DetailView, CreateView, UpdateView, ListView
 
 from .models import Event, CustomUser
-from .forms import EventCreationForm, CustomUserCreationForm, UserLoginForm, UserUpdateForm, ProfileUpdateForm
+from .forms import EventCreationForm, CustomUserCreationForm, UserLoginForm, UserChangeForm, ProfileUpdateForm
 from django.contrib import messages
 from django.contrib.auth import login, logout
 from .decorators import unauthenticated_user
@@ -43,25 +43,25 @@ class Profile(DetailView):
         return context
 
 
-@unauthenticated_user
-def register(request):
-    if request.method == "POST":
-        form = CustomUserCreationForm(request.POST)
-        if form.is_valid():
-            form.save()
-            messages.success(request, 'Your account has been created! You are now able to log in')
-            return redirect('login')
-        else:
-            messages.error(request, 'Error')
-    else:
-        form = CustomUserCreationForm()
-    return render(request, 'events/register.html', {'form': form})
+# @unauthenticated_user
+# def register(request):
+#     if request.method == "POST":
+#         form = CustomUserCreationForm(request.POST)
+#         if form.is_valid():
+#             form.save()
+#             messages.success(request, 'Your account has been created! You are now able to log in')
+#             return redirect('login')
+#         else:
+#             messages.error(request, 'Error')
+#     else:
+#         form = CustomUserCreationForm()
+#     return render(request, 'events/register.html', {'form': form})
 
 
 @login_required(login_url='login')
 def edit_profile(request):
     if request.method == "POST":
-        u_form = UserUpdateForm(request.POST, instance=request.user)
+        u_form = UserChangeForm(request.POST, instance=request.user)
         p_form = ProfileUpdateForm(request.POST, request.FILES, instance=request.user.profile)
         if u_form.is_valid() and p_form.is_valid():
             u_form.save()
@@ -69,7 +69,7 @@ def edit_profile(request):
             messages.success(request, 'Your account has been updated!')
             return redirect('profile', request.user.username)
     else:
-        u_form = UserUpdateForm(instance=request.user)
+        u_form = UserChangeForm(instance=request.user)
         p_form = ProfileUpdateForm(instance=request.user.profile)
 
     context = {
@@ -79,22 +79,22 @@ def edit_profile(request):
     return render(request, 'events/edit_profile.html', context)
 
 
-@unauthenticated_user
-def user_login(request):
-    if request.method == "POST":
-        form = UserLoginForm(data=request.POST)
-        if form.is_valid():
-            user = form.get_user()
-            login(request, user)
-            return redirect('home')
-    else:
-        form = UserLoginForm()
-    return render(request, 'events/login.html', {'form': form})
+# @unauthenticated_user
+# def user_login(request):
+#     if request.method == "POST":
+#         form = UserLoginForm(data=request.POST)
+#         if form.is_valid():
+#             user = form.get_user()
+#             login(request, user)
+#             return redirect('home')
+#     else:
+#         form = UserLoginForm()
+#     return render(request, 'events/login.html', {'form': form})
 
 
-def user_logout(request):
-    logout(request)
-    return redirect('home')
+# def user_logout(request):
+#     logout(request)
+#     return redirect('home')
 
 
 def view_event(request, event_id):
@@ -111,7 +111,7 @@ def view_event(request, event_id):
             return redirect(event_item.get_absolute_url())
         elif request.POST['signup'] == 'NEOK':
             messages.error(request, 'You are not authorized!')
-            return redirect('login')
+            return redirect('account_login')
         else:
             event_item.visitors.remove(request.user)
             return redirect(event_item.get_absolute_url())
