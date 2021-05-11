@@ -2,6 +2,7 @@
 {% load events_tags %}
 
 {% block content %}
+{% if events %}
 <div class="col-md-12">
     {% for item in events %}
     <div class="card mb-3">
@@ -19,11 +20,15 @@
             </div>
         </div>
         <div class="card-footer text-muted">
-           Owner of the event: <a href="{% url 'profile' item.owner.username %}"> {{ item.owner }} </a> <br>
+            Owner of the event: <a href="{% url 'profile' item.owner.username %}"> {{ item.owner }} </a> <br>
             Amount of participants: {% get_count item %}
         </div>
     </div>
     {% endfor %}
 </div>
+{% else %}
+<h1>You have not registered for any event yet</h1>
+<h2>You can see the list of events <a href="{% url 'home' %}">here</a></h2>
+{% endif %}
 {% endblock %}
 

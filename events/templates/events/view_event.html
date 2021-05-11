@@ -18,21 +18,30 @@
                     <form action="{{item.get_absolute_url}}" method="post">
                         {% csrf_token %}
                         {% if signup %}
-                        <button type="submit" name='signup' value="NEOK" class="btn btn-primary">Withdraw from event
+                        <button type="submit" name='signup' value="" class="btn btn-primary">Withdraw from event
                         </button>
                         {% else %}
-                        <button type="submit" name='signup' value="OK" class="btn btn-primary">Sign up for event
-                        </button>
+                            {% if request.user.is_authenticated %}
+                            <button type="submit" name='signup' value="OK" class="btn btn-primary">Sign up for event
+                            </button>
+                            {% else %}
+                            <button type="submit" name='signup' value="NEOK" class="btn btn-primary">Sign up for event
+                            </button>
+                            {% endif %}
                         {% endif %}
                     </form>
                 </div>
             </div>
         </div>
         <div class="card-footer text-muted">
-            Owner of the event: <a href="#"> {{ item.owner }} </a> <br>
+            {% if item.owner == request.user %}
+             <a href="{% url 'edit_event' item.pk %}">Edit an event</a> <br>
+            {% else %}
+            Owner of the event: <a href="{% url 'profile' item.owner.username %}"> {{ item.owner }} </a> <br>
+            {% endif %}
             Amount of participants: {% get_count item %}
         </div>
     </div>
 
     {% endblock %}
-
+</div>
