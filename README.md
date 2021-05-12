@@ -27,6 +27,11 @@ Any user can list events:
 <li> Registration with email and password </li>
 </ul>
 
+Database included for demonstration purposes
+
+Admin profile login:
+email = admin@localhost
+password = admin
 
 Run the next commands to run docker and start the project:
 
